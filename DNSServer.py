@@ -31,28 +31,34 @@ def generate_aes_key(password, salt):
     key = base64.urlsafe_b64encode(key)
     return key
 
-# Lookup details on fernet in the cryptography.io documentation
+# Lookup details on fernet in the cryptography.io documentation    
 def encrypt_with_aes(input_string, password, salt):
     key = generate_aes_key(password, salt)
     f = Fernet(key)
     encrypted_data = f.encrypt(input_string.encode('utf-8')) # call the Fernet encrypt method
-    return encrypted_data
+    return encrypted_data    
 
 def decrypt_with_aes(encrypted_data, password, salt):
+    # Accept either bytes or a string (string is what we store in TXT)
+    if isinstance(encrypted_data, str):
+        encrypted_bytes = encrypted_data.encode('utf-8')
+    else:
+        encrypted_bytes = encrypted_data
     key = generate_aes_key(password, salt)
     f = Fernet(key)
-    decrypted_data = f.decrypt(encrypted_data) # call the Fernet decrypt method
+    decrypted_data = f.decrypt(encrypted_bytes) # call the Fernet decrypt method
     return decrypted_data.decode('utf-8')
 
 # Prepare encryption parameters
 salt = b'Tandon'  # Remember it should be a byte-object
-password = 'your_nyu_email@nyu.edu'  # <-- REPLACE this placeholder with your actual NYU email used on Gradescope
+password = 'br2583@nyu.edu'  # Use the NYU email used in your Gradescope account (the test prints this)
 input_string = "AlwaysWatching"
 
+# encrypt -> returns bytes; we will decode to string when storing in TXT
 encrypted_value = encrypt_with_aes(input_string, password, salt) # exfil function
 decrypted_value = decrypt_with_aes(encrypted_value, password, salt)  # exfil function
 
-# For future use
+# For future use    
 def generate_sha256_hash(input_string):
     sha256_hash = hashlib.sha256()
     sha256_hash.update(input_string.encode('utf-8'))
