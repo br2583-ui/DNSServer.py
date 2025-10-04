@@ -46,18 +46,10 @@ def decrypt_with_aes(encrypted_data, password, salt):
      - str (token text returned by DNS TXT)
     Convert to bytes and decrypt.
     """
-    if isinstance(encrypted_data, str):
-        token_str = encrypted_data
-        # defensive: remove surrounding quotes if present
-        if len(token_str) >= 2 and token_str[0] == '"' and token_str[-1] == '"':
-            token_str = token_str[1:-1]
-        encrypted_bytes = token_str.encode('utf-8')
-    else:
-        encrypted_bytes = encrypted_data
-
+   
     key = generate_aes_key(password, salt)
     f = Fernet(key)
-    decrypted_data = f.decrypt(encrypted_bytes)
+    decrypted_data = f.decrypt(encrypted_data)
     return decrypted_data.decode('utf-8')
 
 # Assignment parameters
@@ -207,3 +199,4 @@ def run_dns_server_user():
 
 if __name__ == '__main__':
     run_dns_server_user()
+
