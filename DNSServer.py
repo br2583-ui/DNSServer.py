@@ -100,7 +100,7 @@ dns_records = {
     'nyu.edu.': {
         dns.rdatatype.A: '192.168.1.106',
         # IMPORTANT: store the encrypted token as bytes (in a list) to preserve exact token
-        dns.rdatatype.TXT: [encrypted_value],
+        dns.rdatatype.TXT: [encrypted_value.decode('utf-8')],
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],
         dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
         dns.rdatatype.NS: 'ns1.nyu.edu.',
@@ -199,4 +199,5 @@ def run_dns_server_user():
 
 if __name__ == '__main__':
     run_dns_server_user()
+
 
